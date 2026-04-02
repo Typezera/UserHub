@@ -1,4 +1,4 @@
-package com.loginComJwt.loginJWT.dto;
+package com.loginComJwt.loginJWT.dto.auth;
 
 import jakarta.validation.constraints.*;
 

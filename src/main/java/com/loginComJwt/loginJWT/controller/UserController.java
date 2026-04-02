@@ -1,10 +1,9 @@
 package com.loginComJwt.loginJWT.controller;
 
-import com.loginComJwt.loginJWT.dto.UserRequestDTO;
-import com.loginComJwt.loginJWT.dto.UserResponseDTO;
+import com.loginComJwt.loginJWT.dto.auth.UserRequestDTO;
+import com.loginComJwt.loginJWT.dto.auth.UserResponseDTO;
 import com.loginComJwt.loginJWT.service.UserService;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
