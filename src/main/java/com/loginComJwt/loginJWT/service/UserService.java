@@ -8,6 +8,7 @@ import com.loginComJwt.loginJWT.auth.service.JwtService;
 import com.loginComJwt.loginJWT.model.UserModel;
 import com.loginComJwt.loginJWT.repository.UserRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -15,10 +16,12 @@ import org.springframework.web.server.ResponseStatusException;
 public class UserService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, JwtService jwtService){
+    public UserService(UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.jwtService = jwtService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     //{metodo de criação de usuário, vai ser chamado no controller: [POST]}
@@ -26,8 +29,10 @@ public class UserService {
         UserModel user = new UserModel();
         user.setNome(userRequest.nome());
         user.setEmail(userRequest.email());
-        user.setSenha(userRequest.senha());
+        user.setSenha(passwordEncoder.encode(userRequest.senha()));
         user.setTelefone(userRequest.telefone());
+
+
 
         UserModel usuario = userRepository.save(user);
 
@@ -45,6 +50,13 @@ public class UserService {
                         HttpStatus.NOT_FOUND,
                         "Usuário com o Email: " + user.email() + " não encontrado."
                 ));
+
+        if (!passwordEncoder.matches(user.senha(), usuario.getSenha())){
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED,
+                    "Senha inválida"
+            );
+        }
 
         String token = jwtService.generateToken(usuario);
         return new UserLoginResponseDTO(

@@ -37,6 +37,7 @@ public class UserModel {
         return id;
     }
 
+    public String getSenha() {return senha;}
     public void setId(Long id) {
         this.id = id;
     }
