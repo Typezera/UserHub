@@ -14,8 +14,8 @@ public record UserRequestDTO(
          String senha,
          @NotBlank(message = "Informe um telefone.")
          @Pattern(
-                 regexp = "^\\(\\d{2}\\)\\s\\d{4,5}-\\d{4}$",
-                 message = "Formato de telefone invalido. Use: (XX) XXXXX-XXXX"
+                 regexp = "^(\\(?\\d{2}\\)?\\s?)?9?\\d{4}-\\d{4}$",
+                 message = "Formato de telefone inválido"
          )
          String telefone
 ) {
