@@ -5,12 +5,16 @@ import com.loginComJwt.loginJWT.auth.dto.UserLoginResponseDTO;
 import com.loginComJwt.loginJWT.auth.dto.UserRequestDTO;
 import com.loginComJwt.loginJWT.auth.dto.UserResponseDTO;
 import com.loginComJwt.loginJWT.auth.service.JwtService;
+import com.loginComJwt.loginJWT.dto.UserResponseGetDTO;
 import com.loginComJwt.loginJWT.model.UserModel;
 import com.loginComJwt.loginJWT.repository.UserRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -67,4 +71,14 @@ public class UserService {
         );
     }
 
+    public List<UserResponseGetDTO> exibirUsuarios() {
+        var usuarios = userRepository.findAll();
+
+        return usuarios.stream().map(usuario -> new UserResponseGetDTO(
+                usuario.getId(),
+                usuario.getNome(),
+                usuario.getEmail()
+        ))
+                .toList();
+    };
 }
