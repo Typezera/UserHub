@@ -1,4 +1,4 @@
 package com.loginComJwt.loginJWT.dto;
 
-public record UserResponseGetNamePathDTO() {
+public record UserResponseGetNamePatchDTO(String name) {
 }
