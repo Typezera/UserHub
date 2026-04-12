@@ -180,7 +180,7 @@ public class UserService {
                     HttpStatus.FORBIDDEN, "Você não pode alterar esse usuário"
             );
         }
-        user.setSenha(senha.senha());
+        user.setSenha(passwordEncoder.encode(senha.senha()));
         userRepository.save(user);
     }
 
