@@ -121,17 +121,8 @@ public class UserService {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Cliente não encontrado"
                 ));
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String emailLogado = (String) auth.getPrincipal();
 
-        var usuarioLogado = userRepository.findByEmail(emailLogado)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-
-        if (!user.getId().equals(usuarioLogado.getId())){
-            throw new ResponseStatusException(
-                    HttpStatus.FORBIDDEN, "Você não pode alterar esse usuário"
-            );
-        }
+        validarUsuarioLogado(user);
 
         user.setNome(name.nome());
         var atualizarUsuario = userRepository.save(user);
@@ -145,20 +136,10 @@ public class UserService {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Cliente não encontrado"
                 ));
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String emailLogado = (String) auth.getPrincipal();
+        validarUsuarioLogado(user);
 
-        var usuarioLogado = userRepository.findByEmail(emailLogado)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.UNAUTHORIZED, "Usuário do token não encontrado."
-                ));
-
-        if (!user.getId().equals(usuarioLogado.getId())){
-            throw new ResponseStatusException(
-                    HttpStatus.FORBIDDEN, "Você não pode alterar esse usuário"
-            );
-        }
         user.setEmail(email.email());
+
         var atualizaEmail = userRepository.save(user);
 
         return new UserResponseGetEmailPatchDTO(
@@ -172,19 +153,7 @@ public class UserService {
                         HttpStatus.NOT_FOUND, "Cliente não encontrado"
                 ));
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String emailLogado = (String) auth.getPrincipal();
-
-        var usuarioLogado = userRepository.findByEmail(emailLogado)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.UNAUTHORIZED, "Usuário do token não encontrado."
-                ));
-
-        if (!user.getId().equals(usuarioLogado.getId())){
-            throw new ResponseStatusException(
-                    HttpStatus.FORBIDDEN, "Você não pode alterar esse usuário"
-            );
-        }
+        validarUsuarioLogado(user);
         user.setSenha(passwordEncoder.encode(senha.senha()));
         userRepository.save(user);
     }
@@ -195,22 +164,29 @@ public class UserService {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Cliente não encontrado"
                 ));
+        validarUsuarioLogado(user);
+        user.setActivate(false);
+    }
 
+
+    private UserModel getUsuarioLogado() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String emailLogado = (String) authentication.getPrincipal();
 
-        var usuarioLogado = userRepository.findByEmail(emailLogado)
+        return userRepository.findByEmail(emailLogado)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.UNAUTHORIZED, "Usuário do token não encontrado."
                 ));
+    }
 
-        if (!user.getId().equals(usuarioLogado.getId())){
+    private void validarUsuarioLogado(UserModel usuario){
+        UserModel userLogado = getUsuarioLogado();
+
+        if (!usuario.getId().equals(userLogado.getId())){
             throw new ResponseStatusException(
-                    HttpStatus.FORBIDDEN, "Você não pode atualizar informações de outro usuárioM"
+                    HttpStatus.FORBIDDEN, "Você não pode atualizar informações de outro usuário"
             );
         }
-
-        user.setActivate(false);
     }
 
 }
