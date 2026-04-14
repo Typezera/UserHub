@@ -149,7 +149,9 @@ public class UserService {
         String emailLogado = (String) auth.getPrincipal();
 
         var usuarioLogado = userRepository.findByEmail(emailLogado)
-                .orElseThrow(() -> new RuntimeException("Usuario do token não encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.UNAUTHORIZED, "Usuário do token não encontrado."
+                ));
 
         if (!user.getId().equals(usuarioLogado.getId())){
             throw new ResponseStatusException(
@@ -174,7 +176,9 @@ public class UserService {
         String emailLogado = (String) auth.getPrincipal();
 
         var usuarioLogado = userRepository.findByEmail(emailLogado)
-                .orElseThrow(() -> new RuntimeException("Usuário do token não encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.UNAUTHORIZED, "Usuário do token não encontrado."
+                ));
 
         if (!user.getId().equals(usuarioLogado.getId())){
             throw new ResponseStatusException(
@@ -196,7 +200,9 @@ public class UserService {
         String emailLogado = (String) authentication.getPrincipal();
 
         var usuarioLogado = userRepository.findByEmail(emailLogado)
-                .orElseThrow(() -> new RuntimeException(("Usuário do token não encontrado.")));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.UNAUTHORIZED, "Usuário do token não encontrado."
+                ));
 
         if (!user.getId().equals(usuarioLogado.getId())){
             throw new ResponseStatusException(
