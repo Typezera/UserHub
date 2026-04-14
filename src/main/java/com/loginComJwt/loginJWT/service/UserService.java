@@ -36,6 +36,14 @@ public class UserService {
 
     //{metodo de criação de usuário, vai ser chamado no controller: [POST]}
     public UserResponseDTO criarUsuario(UserRequestDTO userRequest){
+
+        userRepository.findByEmail(userRequest.email())
+                .ifPresent(user -> {
+                    throw new ResponseStatusException(
+                            HttpStatus.BAD_REQUEST, "usuário já cadastrado com esse email"
+                    );
+                });
+
         UserModel user = new UserModel();
         user.setNome(userRequest.nome());
         user.setEmail(userRequest.email());
@@ -43,6 +51,8 @@ public class UserService {
         user.setTelefone(userRequest.telefone());
         user.setActivate(true);
 
+        // futuramente implementar uma forma de avisar o usário
+        // que o email já está em uso e fazer com que ele recupere a conta
 
         UserModel usuario = userRepository.save(user);
 
