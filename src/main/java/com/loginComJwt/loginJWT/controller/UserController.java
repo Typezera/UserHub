@@ -62,4 +62,12 @@ public class UserController {
         userService.desativarUsuario(id);
         return ResponseEntity.ok("Usuário desativado com sucesso");
     }
+
+    @PatchMapping("reactivate")
+    public ResponseEntity<String> reactivarConta(
+            @RequestBody UserRequestSetEmailPatchDTO email){
+        userService.reativarUsuario(email);
+        return ResponseEntity.ok("Usuário reactivado com sucesso");
+    }
+
 }

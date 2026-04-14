@@ -10,6 +10,7 @@ import com.loginComJwt.loginJWT.dto.patchDTO.*;
 import com.loginComJwt.loginJWT.model.UserModel;
 import com.loginComJwt.loginJWT.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -176,6 +177,21 @@ public class UserService {
                 ));
         validarUsuarioLogado(user);
         user.setActivate(false);
+    }
+
+    @Transactional
+    public void reativarUsuario(UserRequestSetEmailPatchDTO email){
+        var usuario  = userRepository.findByEmail(email.email())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Cliente não encontrado"
+                ));
+        if (usuario.getActivate()){
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT, "Conta já está ativa"
+            );
+        }
+
+        usuario.setActivate(true);
     }
 
 

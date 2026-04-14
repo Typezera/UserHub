@@ -15,4 +15,5 @@ public interface UserRepository extends JpaRepository<UserModel, Long> {
     List<UserModel> findAllByActivateTrue();
     Optional<UserModel> findByIdAndActivateTrue(Long id);
     Optional<UserModel> findByEmailAndActivateTrue(String email);
+    //Optional<UserModel> findByEmailAndActivateFalse(String email);
 }
