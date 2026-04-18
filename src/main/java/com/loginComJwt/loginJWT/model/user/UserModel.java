@@ -1,6 +1,9 @@
-package com.loginComJwt.loginJWT.model;
+package com.loginComJwt.loginJWT.model.user;
 
+import com.loginComJwt.loginJWT.model.task.TaskModel;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 
 @Entity
@@ -23,6 +26,17 @@ public class UserModel {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<TaskModel> taskModels;
+
+    public void setTaskModels(List<TaskModel> taskModels) {
+        this.taskModels = taskModels;
+    }
+
+    public List<TaskModel> getTaskModels() {
+        return taskModels;
+    }
 
     public Role getRole() {
         return role;
