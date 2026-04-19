@@ -9,6 +9,7 @@ import com.loginComJwt.loginJWT.dto.userDto.*;
 import com.loginComJwt.loginJWT.model.user.Role;
 import com.loginComJwt.loginJWT.model.user.UserModel;
 import com.loginComJwt.loginJWT.repository.user.UserRepository;
+import com.loginComJwt.loginJWT.service.security.SecurityService;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,11 +28,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final SecurityService securityService;
 
-    public UserService(UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder){
+    public UserService(UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder, SecurityService securityService){
         this.userRepository = userRepository;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
+        this.securityService = securityService;
     }
 
     //{metodo de criação de usuário, vai ser chamado no controller: [POST]}
@@ -133,7 +136,7 @@ public class UserService {
                         HttpStatus.NOT_FOUND, "Cliente não encontrado"
                 ));
 
-        validarUsuarioLogado(user);
+        securityService.validarUsuarioLogado(user);
 
         user.setNome(name.nome());
         var atualizarUsuario = userRepository.save(user);
@@ -147,7 +150,7 @@ public class UserService {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Cliente não encontrado"
                 ));
-        validarUsuarioLogado(user);
+        securityService.validarUsuarioLogado(user);
 
         user.setEmail(email.email());
 
@@ -164,7 +167,7 @@ public class UserService {
                         HttpStatus.NOT_FOUND, "Cliente não encontrado"
                 ));
 
-        validarUsuarioLogado(user);
+        securityService.validarUsuarioLogado(user);
         user.setSenha(passwordEncoder.encode(senha.senha()));
         userRepository.save(user);
     }
@@ -175,7 +178,7 @@ public class UserService {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Cliente não encontrado"
                 ));
-        validarUsuarioLogado(user);
+        securityService.validarUsuarioLogado(user);
         user.setActivate(false);
     }
 
@@ -195,24 +198,5 @@ public class UserService {
     }
 
 
-    private UserModel getUsuarioLogado() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String emailLogado = (String) authentication.getPrincipal();
-
-        return userRepository.findByEmail(emailLogado)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.UNAUTHORIZED, "Usuário do token não encontrado."
-                ));
-    }
-
-    private void validarUsuarioLogado(UserModel usuario){
-        UserModel userLogado = getUsuarioLogado();
-
-        if (!usuario.getId().equals(userLogado.getId())){
-            throw new ResponseStatusException(
-                    HttpStatus.FORBIDDEN, "Você não pode atualizar informações de outro usuário"
-            );
-        }
-    }
 
 }
