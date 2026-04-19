@@ -2,6 +2,7 @@ package com.loginComJwt.loginJWT.service.task;
 
 import com.loginComJwt.loginJWT.dto.taskDto.TaskRequestDTO;
 import com.loginComJwt.loginJWT.dto.taskDto.TaskResponseDTO;
+import com.loginComJwt.loginJWT.dto.userDto.UserResponseGetDTO;
 import com.loginComJwt.loginJWT.model.task.TaskModel;
 import com.loginComJwt.loginJWT.model.user.UserModel;
 import com.loginComJwt.loginJWT.repository.task.TaskRepository;
@@ -29,16 +30,24 @@ public class TaskService {
         task.setDescricao(taskRequest.descricao());
         task.setStatus(taskRequest.status());
         task.setUsuario(usuarioLogado);
+        UserModel u = usuarioLogado;
 
-        TaskModel user = taskRepository.save(task);
+        UserResponseGetDTO userDTO = new UserResponseGetDTO(
+          u.getId(),
+          u.getNome(),
+          u.getEmail()
+        );
+
+
+        TaskModel savedTask = taskRepository.save(task);
 
         return new TaskResponseDTO(
-                user.getId(),
-                user.getNome(),
-                user.getDescricao(),
-                user.getStatus(),
-                user.getData(),
-                user.getUsuario().getId()
+                savedTask.getId(),
+                savedTask.getNome(),
+                savedTask.getDescricao(),
+                savedTask.getStatus(),
+                savedTask.getData(),
+                userDTO
         );
     }
 
