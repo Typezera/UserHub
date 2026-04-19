@@ -1,7 +1,6 @@
 package com.loginComJwt.loginJWT.controller.user;
 
-import com.loginComJwt.loginJWT.dto.*;
-import com.loginComJwt.loginJWT.dto.patchDTO.*;
+import com.loginComJwt.loginJWT.dto.userDto.*;
 import com.loginComJwt.loginJWT.service.user.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
