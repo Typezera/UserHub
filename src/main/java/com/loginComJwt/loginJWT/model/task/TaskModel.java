@@ -2,6 +2,8 @@ package com.loginComJwt.loginJWT.model.task;
 
 import com.loginComJwt.loginJWT.model.user.UserModel;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,6 +23,7 @@ public class TaskModel {
 
     private TarefaStatus status;
 
+    @UpdateTimestamp
     private LocalDateTime data;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,12 +35,6 @@ public class TaskModel {
     public LocalDateTime getData() {
         return data;
     }
-
-    public LocalDateTime setData() {
-        LocalDateTime data = LocalDateTime.now();
-        return this.data = data;
-    }
-
 
     public Long getId() {
         return id;
@@ -59,8 +56,8 @@ public class TaskModel {
         return usuario;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public UserModel setUsuario(UserModel usuario){
+        return this.usuario = usuario;
     }
 
     public void setNome(String nome) {

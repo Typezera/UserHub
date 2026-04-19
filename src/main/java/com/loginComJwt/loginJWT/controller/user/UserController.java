@@ -3,6 +3,7 @@ package com.loginComJwt.loginJWT.controller.user;
 import com.loginComJwt.loginJWT.dto.userDto.*;
 import com.loginComJwt.loginJWT.service.user.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,21 +16,25 @@ public class UserController {
     private final UserService userService;
     public UserController(UserService userService){this.userService = userService;}
 
+    @PreAuthorize("hasRole('USER', 'ADMIN')")
     @GetMapping
     public ResponseEntity<List<UserResponseGetDTO>> verUsuarios(){
         return ResponseEntity.ok(userService.exibirUsuarios());
     }
 
+    @PreAuthorize("hasRole('USER', 'ADMIN')")
     @GetMapping("email/{email}")
     public ResponseEntity<UserResponseGetDTO> buscarUsuarioEmail(@PathVariable String email){
         return ResponseEntity.ok(userService.encontrarUsuarioEmail(email));
     }
 
+    @PreAuthorize("hasRole('USER', 'ADMIN')")
     @GetMapping("id/{id}")
     public ResponseEntity<UserResponseGetDTO> buscarUsuarioById(@PathVariable Long id){
         return ResponseEntity.ok(userService.encontrarUsuarioById(id));
     }
 
+    @PreAuthorize("hasRole('USER', 'ADMIN')")
     @PatchMapping("update/name/{id}")
     public ResponseEntity<UserResponseGetNamePatchDTO> atualizarNome(
             @PathVariable Long id,
@@ -37,6 +42,7 @@ public class UserController {
         return ResponseEntity.ok(userService.atualizarNome(id,name));
     }
 
+    @PreAuthorize("hasRole('USER', 'ADMIN')")
     @PatchMapping("update/email/{id}")
     public ResponseEntity<UserResponseGetEmailPatchDTO> atualizarEmail(
             @PathVariable Long id,
@@ -44,6 +50,7 @@ public class UserController {
         return ResponseEntity.ok(userService.atualizarEmail(id, email));
     }
 
+    @PreAuthorize("hasRole('USER', 'ADMIN')")
     @PatchMapping("update/password/{id}")
     public ResponseEntity<String> atualizarSenha(
             @PathVariable Long id,
@@ -52,8 +59,7 @@ public class UserController {
         return ResponseEntity.ok("Senha atualizada com sucesso");
     }
 
-   // @PreAuthorize("hasRole('USER')")
-   // @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER', 'ADMIN')")
     @DeleteMapping("delete/{id}")
     public ResponseEntity<String> desativarUsuario(
             @PathVariable Long id
