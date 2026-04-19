@@ -1,14 +1,11 @@
-package com.loginComJwt.loginJWT.controller;
+package com.loginComJwt.loginJWT.controller.user;
 
 import com.loginComJwt.loginJWT.dto.*;
 import com.loginComJwt.loginJWT.dto.patchDTO.*;
-import com.loginComJwt.loginJWT.service.UserService;
-import org.springframework.http.HttpStatus;
+import com.loginComJwt.loginJWT.service.user.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -56,7 +53,8 @@ public class UserController {
         return ResponseEntity.ok("Senha atualizada com sucesso");
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+   // @PreAuthorize("hasRole('USER')")
+   // @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("delete/{id}")
     public ResponseEntity<String> desativarUsuario(
             @PathVariable Long id

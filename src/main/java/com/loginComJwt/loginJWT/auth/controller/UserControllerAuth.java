@@ -4,7 +4,7 @@ import com.loginComJwt.loginJWT.auth.dto.UserLoginRequestDTO;
 import com.loginComJwt.loginJWT.auth.dto.UserLoginResponseDTO;
 import com.loginComJwt.loginJWT.auth.dto.UserRequestDTO;
 import com.loginComJwt.loginJWT.auth.dto.UserResponseDTO;
-import com.loginComJwt.loginJWT.service.UserService;
+import com.loginComJwt.loginJWT.service.user.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.loginComJwt.loginJWT.service;
+package com.loginComJwt.loginJWT.service.user;
 
 import com.loginComJwt.loginJWT.auth.dto.UserLoginRequestDTO;
 import com.loginComJwt.loginJWT.auth.dto.UserLoginResponseDTO;
@@ -9,7 +9,7 @@ import com.loginComJwt.loginJWT.dto.*;
 import com.loginComJwt.loginJWT.dto.patchDTO.*;
 import com.loginComJwt.loginJWT.model.user.Role;
 import com.loginComJwt.loginJWT.model.user.UserModel;
-import com.loginComJwt.loginJWT.repository.UserRepository;
+import com.loginComJwt.loginJWT.repository.user.UserRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

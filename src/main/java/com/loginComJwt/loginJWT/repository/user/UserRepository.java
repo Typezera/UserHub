@@ -1,4 +1,4 @@
-package com.loginComJwt.loginJWT.repository;
+package com.loginComJwt.loginJWT.repository.user;
 
 import com.loginComJwt.loginJWT.model.user.UserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
