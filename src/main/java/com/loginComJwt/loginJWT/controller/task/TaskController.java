@@ -38,4 +38,12 @@ public class TaskController {
             @RequestBody updateTaskRequestDTO descricao){
         return ResponseEntity.ok(taskService.atualizarDescricaoTarefa(id, descricao));
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> removerTarefa(
+            @PathVariable Long id
+    ){
+        taskService.deletarTarefa(id);
+        return ResponseEntity.ok("Tarefa removida com sucesso!");
+    }
 }

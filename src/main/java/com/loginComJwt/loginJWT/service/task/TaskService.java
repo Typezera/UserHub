@@ -104,5 +104,20 @@ public class TaskService {
         );
     }
 
+    public void deletarTarefa(Long idTask){
+        UserModel user = securityService.getUsuarioLogado();
+
+        taskRepository.findById(idTask)
+                .map( task -> {
+                    securityService.validarDonoTarefa(task, user);
+                    taskRepository.delete(task);
+                    return task;
+                })
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Tarefa não encontrada."
+                ));
+    }
+
 
 }
