@@ -10,6 +10,7 @@ import com.loginComJwt.loginJWT.service.security.SecurityService;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 @Service
@@ -21,6 +22,28 @@ public class TaskService {
         this.taskRepository = taskRepository;
         this.securityService = securityService;
     }
+
+    public List<TaskResponseDTO> mostrarTarefas(){
+        UserModel usuarioLogado = securityService.getUsuarioLogado(); // pegando o usuário logado pelo JWT
+
+        var tasks = taskRepository.findByUsuarioId(usuarioLogado.getId());
+
+        UserResponseGetDTO userDTO = new UserResponseGetDTO(
+            usuarioLogado.getId(),
+            usuarioLogado.getNome(),
+            usuarioLogado.getEmail()
+        );
+
+        return tasks.stream().map(usuario -> new TaskResponseDTO(
+                usuario.getId(),
+                usuario.getNome(),
+                usuario.getDescricao(),
+                usuario.getStatus(),
+                usuario.getData(),
+                userDTO
+        ))
+                .toList();
+    };
 
     public TaskResponseDTO criarTarefa(TaskRequestDTO taskRequest){
         UserModel usuarioLogado = securityService.getUsuarioLogado();
@@ -50,5 +73,7 @@ public class TaskService {
                 userDTO
         );
     }
+
+
 
 }
