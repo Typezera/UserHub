@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RestController
 @RequestMapping("/task")
@@ -15,6 +17,11 @@ public class TaskController {
     private final TaskService taskService;
 
     public TaskController(TaskService taskService){this.taskService = taskService;}
+
+    @PostMapping()// trás as tarefas do proprio usuário
+    public ResponseEntity<List<TaskResponseDTO>> verTarefas(){
+        return ResponseEntity.ok(taskService.mostrarTarefas());
+    }
 
     @PostMapping("/create")
     public ResponseEntity<TaskResponseDTO> criarTarefas(
