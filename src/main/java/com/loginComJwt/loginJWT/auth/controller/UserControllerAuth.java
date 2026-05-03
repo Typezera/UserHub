@@ -5,6 +5,7 @@ import com.loginComJwt.loginJWT.auth.dto.UserLoginResponseDTO;
 import com.loginComJwt.loginJWT.auth.dto.UserRequestDTO;
 import com.loginComJwt.loginJWT.auth.dto.UserResponseDTO;
 import com.loginComJwt.loginJWT.service.user.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,10 @@ public class UserControllerAuth {
         this.userService = userService;
     }
 
+    @Operation(
+            summary = "Cria uma conta no sistema",
+            description = "Apenas envia as credenciais necessárias."
+    )
     @PostMapping("/signup")
     public ResponseEntity<UserResponseDTO> cadastrarUsuario(@Valid @RequestBody UserRequestDTO userRequestDTO){
        var usuario = userService.criarUsuario(userRequestDTO);
@@ -30,6 +35,10 @@ public class UserControllerAuth {
        return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
     }
 
+    @Operation(
+            summary = "Faz o login na conta criada.",
+            description = "Fornece email e senha."
+    )
     @PostMapping("/login")
     public ResponseEntity<UserLoginResponseDTO> login (
             @RequestBody @Valid UserLoginRequestDTO requisicao
